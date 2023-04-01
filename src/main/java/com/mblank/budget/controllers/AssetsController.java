@@ -1,32 +1,22 @@
 package com.mblank.budget.controllers;
 
+import com.mblank.budget.services.AssetsService;
+import com.mblank.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.List;
-
 @RestController
 @RequestMapping("/assets")
 public class AssetsController {
+    private final AssetsService assetsService;
 
-    @GetMapping
-    public Dto getAssets(){
-        var dto = new Dto();
-        dto.setAssets(Arrays.asList(1, 3, 5));
-        return dto;
+    public AssetsController(AssetsService assetsService) {
+        this.assetsService = assetsService;
     }
 
-    private class Dto {
-        private List<Integer> assets;
-
-        public List<Integer> getAssets() {
-            return assets;
-        }
-
-        public void setAssets(List<Integer> assets) {
-            this.assets = assets;
-        }
+    @GetMapping
+    public AssetsDto getAssets(){
+        return assetsService.getAllAssets();
     }
 }
