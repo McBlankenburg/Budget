@@ -2,9 +2,7 @@ package com.mblank.budget.controllers;
 
 import com.mblank.budget.services.AssetsService;
 import com.mblank.budget.services.dtos.AssetsDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/assets")
@@ -18,5 +16,10 @@ public class AssetsController {
     @GetMapping
     public AssetsDto getAssets(){
         return assetsService.getAllAssets();
+    }
+
+    @PostMapping("/{assets}")
+    public void setAsset(@PathVariable("assets") int asset){
+        assetsService.setAsset(asset);
     }
 }
