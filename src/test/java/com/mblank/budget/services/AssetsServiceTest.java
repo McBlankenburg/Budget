@@ -1,5 +1,6 @@
 package com.mblank.budget.services;
 
+import com.mblank.budget.services.dtos.AssetsDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,15 +12,16 @@ class AssetsServiceTest {
     void shouldSaveAssetAndReturnListWithOneElementIfThereWasNoSavedAssetsBefore() {
         //given
         var service = new AssetsService();
-        var asset = 1;
+        int asset = 55;
         service.setAsset(asset);
 
         //when
-        var result = service.getAllAssets();
+        AssetsDto result = service.getAllAssets();
 
         //then
         List<Integer> listOfAssets = result.getAssets();
         Assertions.assertThat(listOfAssets)
-                .hasSize(1);
+                .hasSize(1)
+                .containsExactly(asset);
     }
 }
