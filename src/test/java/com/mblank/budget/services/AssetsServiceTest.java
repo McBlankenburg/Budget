@@ -24,4 +24,23 @@ class AssetsServiceTest {
                 .hasSize(1)
                 .containsExactly(asset);
     }
+
+    @Test
+    void shouldSaveAssetAndReturnListWithTwoElementsIfThereWasNoSavedAssetsBefore() {
+        //given
+        var service = new AssetsService();
+        int assetOne = 1;
+        int assetTwo = 2;
+        service.setAsset(assetOne);
+        service.setAsset(assetTwo);
+
+        //when
+        var result = service.getAllAssets();
+
+        //then
+        List<Integer> listOfAssets = result.getAssets();
+        Assertions.assertThat(listOfAssets)
+                .hasSize(2)
+                .containsExactly(assetOne, assetTwo);
+    }
 }
