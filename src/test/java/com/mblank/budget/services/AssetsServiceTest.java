@@ -1,17 +1,22 @@
 package com.mblank.budget.services;
 
+import com.mblank.budget.mappers.AssetsMapper;
+import com.mblank.budget.repositories.AssetsRepository;
 import com.mblank.budget.services.dtos.AssetsDto;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
 
 class AssetsServiceTest {
 
+    private AssetsRepository assetsRepository= new FakeAssetsRepository();
+    private AssetsMapper assetsMapper = new AssetsMapper();
+
     @Test
     void shouldSaveAssetAndReturnListWithOneElementIfThereWasNoSavedAssetsBefore() {
         //given
-        var service = new AssetsService();
+        var service = new AssetsService(assetsRepository, assetsMapper);
         int asset = 55;
         service.setAsset(asset);
 
@@ -26,9 +31,10 @@ class AssetsServiceTest {
     }
 
     @Test
+    @DisplayName("shouldSaveAssetAndReturnListWithTwoElementsIfThereWasNoSavedAssetsBefore")
     void shouldSaveAssetAndReturnListWithTwoElementsIfThereWasNoSavedAssetsBefore() {
         //given
-        var service = new AssetsService();
+        var service = new AssetsService(assetsRepository, assetsMapper);
         int assetOne = 1;
         int assetTwo = 2;
         service.setAsset(assetOne);
