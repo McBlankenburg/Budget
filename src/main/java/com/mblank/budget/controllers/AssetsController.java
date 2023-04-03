@@ -1,6 +1,7 @@
 package com.mblank.budget.controllers;
 
 import com.mblank.budget.services.AssetsService;
+import com.mblank.budget.services.dtos.AssetDto;
 import com.mblank.budget.services.dtos.AssetsDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class AssetsController {
         return assetsService.getAllAssets();
     }
 
-    @PostMapping("/{assets}")
-    public void setAsset(@PathVariable("assets") int asset){
-        assetsService.setAsset(asset);
+    @PostMapping
+    public void setAsset(@RequestBody AssetDto dto){
+        assetsService.setAsset(dto);
     }
 }

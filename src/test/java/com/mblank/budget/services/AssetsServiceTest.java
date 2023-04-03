@@ -1,9 +1,11 @@
 package com.mblank.budget.services;
 
+import com.mblank.budget.builders.AssetDtoBuilder;
 import com.mblank.budget.builders.AssetEntityBuilder;
 import com.mblank.budget.mappers.AssetsMapper;
 import com.mblank.budget.repositories.AssetsRepository;
 import com.mblank.budget.repositories.entities.AssetEntity;
+import com.mblank.budget.services.dtos.AssetDto;
 import com.mblank.budget.services.dtos.AssetsDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,16 +84,19 @@ class AssetsServiceTest {
     @Test
     void shouldVerifyIfTheRepositorySaveWasCalledOneTime() {
         //given
-        int asset = 1;
+        BigDecimal asset = BigDecimal.ONE;
+        AssetDto dto = new AssetDtoBuilder()
+                .withAmount(asset)
+                .build();
+
         AssetEntity entity = new AssetEntityBuilder()
-                .withAmount(new BigDecimal(asset))
+                .withAmount(asset)
                 .build();
 
         //when
-        service.setAsset(asset);
+        service.setAsset(dto);
 
         //then
-
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
     }
 }

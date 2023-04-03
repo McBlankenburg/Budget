@@ -6,8 +6,6 @@ import com.mblank.budget.repositories.entities.AssetEntity;
 import com.mblank.budget.services.dtos.AssetDto;
 import com.mblank.budget.services.dtos.AssetsDto;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +32,7 @@ public class AssetsService {
         return dto;
     }
 
-    public void setAsset(int asset) {
-        var dto = new AssetDto();
-        dto.setAmount(new BigDecimal(asset));
+    public void setAsset(AssetDto dto) {
         AssetEntity entity = assetsMapper.fromDtoToEntity(dto);
         assetsRepository.save(entity);
     }
