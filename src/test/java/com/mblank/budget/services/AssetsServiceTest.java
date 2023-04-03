@@ -1,24 +1,46 @@
 package com.mblank.budget.services;
 
+import com.mblank.budget.builders.AssetEntityBuilder;
 import com.mblank.budget.mappers.AssetsMapper;
 import com.mblank.budget.repositories.AssetsRepository;
+import com.mblank.budget.repositories.entities.AssetEntity;
 import com.mblank.budget.services.dtos.AssetsDto;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+@ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
 
-    private AssetsRepository assetsRepository= new FakeAssetsRepository();
-    private AssetsMapper assetsMapper = new AssetsMapper();
+    @Mock
+    private AssetsRepository assetsRepository;
+    private final AssetsMapper assetsMapper = new AssetsMapper();
+    private AssetsService service;
+
+    @BeforeEach
+    public void init(){
+        service = new AssetsService(assetsRepository, assetsMapper);
+    }
 
     @Test
-    void shouldSaveAssetAndReturnListWithOneElementIfThereWasNoSavedAssetsBefore() {
+    void shouldReturnListWithTwoElementsIfThereIsOneElementInDatabase() {
         //given
-        var service = new AssetsService(assetsRepository, assetsMapper);
         int asset = 55;
-        service.setAsset(asset);
+        AssetEntity assetEntity = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(asset))
+                .build();
+
+        List<AssetEntity> assetList = Collections.singletonList(assetEntity);
+        Mockito.when(assetsRepository.findAll()).thenReturn(assetList);
 
         //when
         AssetsDto result = service.getAllAssets();
@@ -31,14 +53,21 @@ class AssetsServiceTest {
     }
 
     @Test
-    @DisplayName("shouldSaveAssetAndReturnListWithTwoElementsIfThereWasNoSavedAssetsBefore")
-    void shouldSaveAssetAndReturnListWithTwoElementsIfThereWasNoSavedAssetsBefore() {
+    void shouldReturnListWithTwoElementsIfThereIsTwoElementInDatabase() {
         //given
-        var service = new AssetsService(assetsRepository, assetsMapper);
         int assetOne = 1;
         int assetTwo = 2;
-        service.setAsset(assetOne);
-        service.setAsset(assetTwo);
+
+        AssetEntity entityOne = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(assetOne))
+                .build();
+
+        AssetEntity entityTwo = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(assetTwo))
+                .build();
+
+        List<AssetEntity> assetList = Arrays.asList(entityOne, entityTwo);
+        Mockito.when(assetsRepository.findAll()).thenReturn(assetList);
 
         //when
         var result = service.getAllAssets();
@@ -48,5 +77,21 @@ class AssetsServiceTest {
         Assertions.assertThat(listOfAssets)
                 .hasSize(2)
                 .containsExactly(assetOne, assetTwo);
+    }
+
+    @Test
+    void shouldVerifyIfTheRepositorySaveWasCalledOneTime() {
+        //given
+        int asset = 1;
+        AssetEntity entity = new AssetEntityBuilder()
+                .withAmount(new BigDecimal(asset))
+                .build();
+
+        //when
+        service.setAsset(asset);
+
+        //then
+
+        Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
     }
 }
