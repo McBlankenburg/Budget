@@ -36,4 +36,9 @@ public class AssetsService {
         AssetEntity entity = assetsMapper.fromDtoToEntity(dto);
         assetsRepository.save(entity);
     }
+
+    public void deleteAsset(AssetDto dto) {
+        AssetEntity entity = assetsMapper.fromDtoToEntity(dto);
+        assetsRepository.delete(entity);
+    }
 }

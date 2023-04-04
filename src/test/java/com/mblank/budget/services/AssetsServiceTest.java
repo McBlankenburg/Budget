@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
@@ -99,4 +100,29 @@ class AssetsServiceTest {
         //then
         Mockito.verify(assetsRepository, Mockito.times(1)).save(entity);
     }
+
+    @Test
+    void shouldVerifyIfTheRepositoryDeleteWasCalledOneTIme() {
+        //given
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        BigDecimal testAmount = BigDecimal.ZERO;
+
+        AssetDto dto = new AssetDtoBuilder()
+                .withId(id)
+                .withAmount(testAmount)
+                .build();
+
+        AssetEntity entity = new AssetEntityBuilder()
+                .withId(id)
+                .withAmount(testAmount)
+                .build();
+
+        //when
+        service.deleteAsset(dto);
+
+        //then
+        Mockito.verify(assetsRepository, Mockito.times(1)).delete(entity);
+    }
+
+
 }

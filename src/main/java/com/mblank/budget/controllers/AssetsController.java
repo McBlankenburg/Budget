@@ -15,12 +15,17 @@ public class AssetsController {
     }
 
     @GetMapping
-    public AssetsDto getAssets(){
+    public AssetsDto getAssets() {
         return assetsService.getAllAssets();
     }
 
     @PostMapping
-    public void setAsset(@RequestBody AssetDto dto){
+    public void setAsset(@RequestBody AssetDto dto) {
         assetsService.setAsset(dto);
+    }
+
+    @DeleteMapping
+    public void deleteAsset(@RequestBody AssetDto dto) {
+        assetsService.deleteAsset(dto);
     }
 }
