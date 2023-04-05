@@ -7,7 +7,6 @@ import com.mblank.budget.repositories.AssetsRepository;
 import com.mblank.budget.repositories.entities.AssetEntity;
 import com.mblank.budget.services.dtos.AssetDto;
 import com.mblank.budget.services.dtos.AssetsDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +19,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AssetsServiceTest {
@@ -50,7 +51,7 @@ class AssetsServiceTest {
 
         //then
         List<Integer> listOfAssets = result.getAssets();
-        Assertions.assertThat(listOfAssets)
+        assertThat(listOfAssets)
                 .hasSize(1)
                 .containsExactly(asset);
     }
@@ -77,7 +78,7 @@ class AssetsServiceTest {
 
         //then
         List<Integer> listOfAssets = result.getAssets();
-        Assertions.assertThat(listOfAssets)
+        assertThat(listOfAssets)
                 .hasSize(2)
                 .containsExactly(assetOne, assetTwo);
     }
